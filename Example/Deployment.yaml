@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: final1
+  name: final1
+  namespace: observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: final1
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: final1
+    spec:
+      containers:
+      - image: service1:v1.0
+        imagePullPolicy: IfNotPresent
+        name: service1
+        ports:
+        - containerPort: 10010
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /Traces
+          name: task-pv-storage
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: task-pv-storage
+        persistentVolumeClaim:
+          claimName: config-volume-pvc1
