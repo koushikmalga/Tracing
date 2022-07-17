@@ -85,7 +85,6 @@ func main() {
 		ctx = req.Context()
 
 		ctx, span := otel.Tracer(serviceName).Start(ctx, "service25")
-		time.Sleep(15 * time.Second)
 
 		if fla == 0 {
 			fmt.Println("hello")
